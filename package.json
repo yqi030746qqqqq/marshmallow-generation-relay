@@ -1,0 +1,32 @@
+{
+  "name": "marshmallow-generation-relay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "User-owned Cloudflare Workers generation relay for 棉花糖机",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler d1 migrations apply DB --remote && wrangler deploy",
+    "db:migrations:apply": "wrangler d1 migrations apply DB --remote",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "wrangler": "^4.112.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "ADMIN_TOKEN": {
+        "description": "中继访问令牌。请用密码管理器生成至少 32 位随机字符串；部署后填到棉花糖机「后台任务中继」。**不要**把模型 API Key 写在这里——API Key 由 App 按当前聊天线路动态提交。"
+      },
+      "DB": {
+        "description": "短期任务库（D1）。请求正文与结果会按 TTL 自动删除。"
+      },
+      "JOB_QUEUE": {
+        "description": "异步执行队列。客户端断开后仍会继续调用上游模型。"
+      }
+    }
+  },
+  "dependencies": {
+    "@block65/webcrypto-web-push": "^1.0.2"
+  }
+}

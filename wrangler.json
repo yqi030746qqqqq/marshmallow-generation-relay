@@ -1,0 +1,42 @@
+{
+  "name": "marshmallow-generation-relay",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "marshmallow-relay-db",
+      "database_id": "7f2d4aca-8a2f-427e-91fb-53d5a205a02f",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "JOB_QUEUE",
+        "queue": "marshmallow-relay-jobs"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "marshmallow-relay-jobs",
+        "max_batch_size": 1,
+        "max_retries": 2,
+        "max_batch_timeout": 5
+      }
+    ]
+  },
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
+  "vars": {
+    "CORS_ALLOWLIST": "*",
+    "DEFAULT_REQUEST_TTL_SECONDS": "900",
+    "DEFAULT_RESULT_TTL_SECONDS": "3600",
+    "MAX_BODY_BYTES": "2097152"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
